@@ -1,7 +1,8 @@
 package main
 
 import (
-	"ernes-gems"
+	ernes "ernes-gems"
+
 	"github.com/Sirupsen/logrus"
 )
 

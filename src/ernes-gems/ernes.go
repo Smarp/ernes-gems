@@ -12,6 +12,9 @@ import (
 func Main() {
 	http.HandleFunc("/bounce", func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
+		if confirmSubscription(r) {
+			return
+		}
 		bounce := parseBounce(r.Body)
 		if bounce == nil || bounce.Mail == nil {
 			logrus.
@@ -31,6 +34,9 @@ func Main() {
 
 	http.HandleFunc("/complaint", func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
+		if confirmSubscription(r) {
+			return
+		}
 		complaint := parseComplaint(r.Body)
 		if complaint == nil || complaint.Mail == nil {
 			logrus.
@@ -51,6 +57,9 @@ func Main() {
 
 	http.HandleFunc("/delivery", func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
+		if confirmSubscription(r) {
+			return
+		}
 		delivery := parseDelivery(r.Body)
 		if delivery == nil || delivery.Mail == nil {
 			logrus.

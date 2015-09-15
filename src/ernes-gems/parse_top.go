@@ -25,6 +25,10 @@ type mail struct {
 	Destination      []string `json:"destination"`
 }
 
+type sns struct {
+	Message string `json:"message"`
+}
+
 type top struct {
 	NotificationType notificationType `json:"notificationType"`
 	Mail             *mail            `json:"mail"`
@@ -38,15 +42,26 @@ var parseTop = func(body io.Reader) (t *top) {
 	if byteBody == nil {
 		return nil
 	}
-	t = new(top)
-	err := json.Unmarshal(byteBody, &t)
+	s := new(sns)
+	err := json.Unmarshal(byteBody, s)
 	if err != nil {
 		logrus.
 			WithFields(logrus.Fields{
 			"Err":  err,
 			"Body": string(byteBody),
 		}).
-			Error("Cannot parse body")
+			Error("Cannot parse SNS Body")
+		return nil
+	}
+	t = new(top)
+	err = json.Unmarshal([]byte(s.Message), t)
+	if err != nil {
+		logrus.
+			WithFields(logrus.Fields{
+			"Err":  err,
+			"Body": s.Message,
+		}).
+			Error("Cannot parse top Body")
 		return nil
 	}
 	return t
