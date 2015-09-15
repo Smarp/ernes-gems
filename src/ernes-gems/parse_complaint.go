@@ -39,11 +39,13 @@ var parseComplaint = func(body io.Reader) (c *complaint) {
 		logrus.
 			WithField("Type", t.NotificationType).
 			Error("Expect notication type to be `Complaint`")
+		return nil
 	}
 	if t.Complaint == nil {
 		logrus.
 			WithField("Mail", t).
 			Error("`Complaint` object is nil, logging the whole top object")
+		return nil
 	}
 	c = t.Complaint
 	c.Mail = t.Mail

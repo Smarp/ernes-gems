@@ -57,11 +57,13 @@ var parseBounce = func(body io.Reader) (b *bounce) {
 		logrus.
 			WithField("Type", t.NotificationType).
 			Error("Expect notication type to be `Bounce`")
+		return nil
 	}
 	if t.Bounce == nil {
 		logrus.
 			WithField("Mail", t).
 			Error("`Bounce` object is nil, logging the whole top object")
+		return nil
 	}
 	b = t.Bounce
 	b.Mail = t.Mail

@@ -24,11 +24,13 @@ var parseDelivery = func(body io.Reader) (d *delivery) {
 		logrus.
 			WithField("Type", t.NotificationType).
 			Error("Expect notication type to be `Delivery`")
+		return nil
 	}
 	if t.Delivery == nil {
 		logrus.
 			WithField("Mail", t).
 			Error("`Delivery` object is nil, logging the whole top object")
+		return nil
 	}
 	d = t.Delivery
 	d.Mail = t.Mail

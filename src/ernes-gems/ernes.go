@@ -13,10 +13,10 @@ func Main() {
 	http.HandleFunc("/bounce", func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
 		bounce := parseBounce(r.Body)
-		if bounce == nil && bounce.Mail == nil {
-			logrus.WithFields(logrus.Fields{
-				"Object": bounce,
-			}).Error("Bounced object is nil")
+		if bounce == nil || bounce.Mail == nil {
+			logrus.
+				WithField("Headers", r.Header).
+				Error("Bounced object is nil")
 			return
 		}
 		logrus.WithFields(logrus.Fields{
@@ -32,10 +32,10 @@ func Main() {
 	http.HandleFunc("/complaint", func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
 		complaint := parseComplaint(r.Body)
-		if complaint == nil && complaint.Mail == nil {
-			logrus.WithFields(logrus.Fields{
-				"Object": complaint,
-			}).Error("Complaint object is nil")
+		if complaint == nil || complaint.Mail == nil {
+			logrus.
+				WithField("Headers", r.Header).
+				Error("Complaint object is nil")
 			return
 		}
 		logrus.WithFields(logrus.Fields{
@@ -52,10 +52,10 @@ func Main() {
 	http.HandleFunc("/delivery", func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
 		delivery := parseDelivery(r.Body)
-		if delivery == nil && delivery.Mail == nil {
-			logrus.WithFields(logrus.Fields{
-				"Object": delivery,
-			}).Error("Delivery object is nil")
+		if delivery == nil || delivery.Mail == nil {
+			logrus.
+				WithField("Headers", r.Header).
+				Error("Delivery object is nil")
 			return
 		}
 		logrus.WithFields(logrus.Fields{
