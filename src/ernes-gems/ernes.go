@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/Sirupsen/logrus"
 )
@@ -102,6 +103,13 @@ func Main() {
 	}
 	logrus.Info("Starting serving")
 	// Start the server!
-	logrus.Fatal(http.Serve(ln, nil))
+
+	srv := &http.Server{
+		// be careful of FD leaks
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	logrus.Fatal(srv.Serve(ln))
 	// code can never reach here!!!
 }
